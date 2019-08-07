@@ -64,7 +64,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>如花病毒.Form2</StartupObject>
+    <StartupObject>如花病毒.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>rh.ico</ApplicationIcon>
@@ -88,6 +88,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\bakgroundimage.data" />
     <EmbeddedResource Include="Resources\tast.ico" />
+    <None Include="Resources\反色模块.dll" />
     <Content Include="rh.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +153,11 @@
     <ProjectReference Include="..\..\屏幕反色测试\反色模块\反色模块.csproj">
       <Project>{3aa7d675-6304-4784-8826-e61f2a541443}</Project>
       <Name>反色模块</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>copy C:\Users\Administrator\source\repos\屏幕反色测试\反色模块\bin\Debug\反色模块.dll $(ProjectDir)\Resources</PreBuildEvent>
+  </PropertyGroup>
 </Project>

