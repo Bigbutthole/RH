@@ -111,6 +111,8 @@ Public Class Form2
         newthread.Start()
         Dim newthread2 As New Threading.Thread(AddressOf Shakemouse)
         newthread2.Start()
+        Dim newthread4 As New Threading.Thread(AddressOf Icoc)
+        newthread4.Start()
         'Dim newthread3 As New Threading.Thread(AddressOf Playsound)
         'newthread3.Start()
         Threading.Thread.Sleep(1000 * 60 * 3)
@@ -217,6 +219,33 @@ again:
         ww.CopyFromScreen(New Point, New Point, scr.WorkingArea.Size)
         Dim handle As IntPtr = Class1.PContray(temp1).GetHicon
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
+    End Sub
+    Sub Icoc()
+        Dim ico1 As Bitmap = My.Resources.Resource1.a.ToBitmap
+        Dim ico2 As Bitmap = My.Resources.Resource1.b.ToBitmap
+        Dim ico3 As Bitmap = My.Resources.Resource1.c.ToBitmap
+        Dim ico4 As Bitmap = My.Resources.Resource1.d.ToBitmap
+        Dim ico5 As Bitmap = My.Resources.Resource1.e.ToBitmap
+        Dim ico6 As Bitmap = My.Resources.Resource1.f.ToBitmap
+        Dim ico7 As Bitmap = My.Resources.Resource1.g.ToBitmap
+        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
+        Threading.Thread.Sleep(1000 * 20)
+        Do
+            screen.DrawImage(ico1, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico2, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico3, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico4, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico5, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico6, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+            screen.DrawImage(ico7, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            Threading.Thread.Sleep(1000)
+        Loop
     End Sub
 End Class
 Module Program

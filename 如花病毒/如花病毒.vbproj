@@ -88,7 +88,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\bakgroundimage.data" />
     <EmbeddedResource Include="Resources\tast.ico" />
-    <None Include="Resources\反色模块.dll" />
+    <EmbeddedResource Include="Resources\反色模块.dll" />
+    <EmbeddedResource Include="Resources\c.ico" />
+    <EmbeddedResource Include="Resources\d.ico" />
+    <EmbeddedResource Include="Resources\a.ico" />
+    <EmbeddedResource Include="Resources\b.ico" />
+    <EmbeddedResource Include="Resources\f.ico" />
+    <EmbeddedResource Include="Resources\g.ico" />
+    <EmbeddedResource Include="Resources\e.ico" />
     <Content Include="rh.ico" />
   </ItemGroup>
   <ItemGroup>
