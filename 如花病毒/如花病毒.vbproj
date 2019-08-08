@@ -102,6 +102,7 @@
     <EmbeddedResource Include="Resources\f.ico" />
     <EmbeddedResource Include="Resources\g.ico" />
     <EmbeddedResource Include="Resources\e.ico" />
+    <EmbeddedResource Include="Resources\rh.jpg" />
     <Content Include="rh.ico" />
   </ItemGroup>
   <ItemGroup>
