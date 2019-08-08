@@ -130,9 +130,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MPR">
-      <HintPath>E:\ae\MPR\bin\Debug\MPR.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -164,6 +161,13 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\屏幕反色测试\反色模块\反色模块.csproj">
+      <Project>{3aa7d675-6304-4784-8826-e61f2a541443}</Project>
+      <Name>反色模块</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

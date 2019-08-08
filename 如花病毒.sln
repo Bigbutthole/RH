@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "如花病毒", "如花病毒\如花病毒.vbproj", "{78B7513F-1EB2-4289-8F3F-1F7A355E584C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "反色模块", "..\屏幕反色测试\反色模块\反色模块.csproj", "{3AA7D675-6304-4784-8826-E61F2A541443}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{78B7513F-1EB2-4289-8F3F-1F7A355E584C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78B7513F-1EB2-4289-8F3F-1F7A355E584C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78B7513F-1EB2-4289-8F3F-1F7A355E584C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA7D675-6304-4784-8826-E61F2A541443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA7D675-6304-4784-8826-E61F2A541443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA7D675-6304-4784-8826-E61F2A541443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA7D675-6304-4784-8826-E61F2A541443}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
