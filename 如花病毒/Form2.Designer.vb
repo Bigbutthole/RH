@@ -66,7 +66,7 @@ Partial Class Form2
         '
         'Timer1
         '
-        Me.Timer1.Interval = 5000
+        Me.Timer1.Interval = 20000
         '
         'Timer2
         '
@@ -74,7 +74,7 @@ Partial Class Form2
         '
         'Timer3
         '
-        Me.Timer3.Interval = 1000
+        Me.Timer3.Interval = 1500
         '
         'Form2
         '
